@@ -1,0 +1,14 @@
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.AssemblyInfoInputs.cache
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.AssemblyInfo.cs
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.csproj.CoreCompileInputs.cache
+C:\Users\johan\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.exe
+C:\Users\johan\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.deps.json
+C:\Users\johan\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.runtimeconfig.json
+C:\Users\johan\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.dll
+C:\Users\johan\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.pdb
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.dll
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\refint\ProjektuppgiftNim.dll
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.pdb
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.genruntimeconfig.cache
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ref\ProjektuppgiftNim.dll
