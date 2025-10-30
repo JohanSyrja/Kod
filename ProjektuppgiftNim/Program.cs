@@ -1,4 +1,7 @@
-﻿int sticksInStack = 5;
+﻿using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
+
+int sticksInStack = 5;
 int[] stack = new int[3];
 string[,] stacks = new string[3, 5];
 string player1 = "";
@@ -58,7 +61,7 @@ void playerMove()
     int whichStack = Int32.Parse(getInput());
     Console.WriteLine($"The stack has {amountInStack(whichStack)} amount of sticks");
     Console.WriteLine("How many sticks do you want to remove");
-    int amountOfSticks = Int32.Parse(getInput());
+    int amountOfSticks = Int32.TryParse(getInput(), out int result) ? result : 0;
     if (stack[whichStack - 1] >= amountOfSticks)
     {
         removeSticks(whichStack, amountOfSticks);
@@ -66,7 +69,7 @@ void playerMove()
     else
     {
         Console.WriteLine("Please make a valid move");
-        amountOfSticks = Int32.Parse(getInput());
+        amountOfSticks = Int32.TryParse(getInput(), out int res) ? res : 0;
     }
     playerwon = checkIfEmpty();
     /*
@@ -107,7 +110,52 @@ void printStacks(int[] stack)
     }
 
 }
+string checkGameMode()
+{
+    Console.WriteLine("Choose game mode: 1. Player vs Player 2. Player vs Computer");
+    string mode = getInput();
+    return mode;
+}
+void ComputerMove()
+{
+    int whichstack = RandomNumberGenerator.GetInt32(1, 4);
+    int amountToRemove = RandomNumberGenerator.GetInt32(1, stack[whichstack - 1] + 1);
+    removeSticks(whichstack, amountToRemove);
+}
 
+void gameLoop()
+{
+    if (checkGameMode() == "1")
+    {
+        while (!playerwon)
+        {
+            Console.WriteLine($"{currentPlayer}'s turn");
+            playerMove();
+            if (playerwon)
+            {
+                Console.WriteLine(playerWin());
+                break;
+            }
+            currentPlayer = checkCurrentPlayer(player1, player2) == player1 ? player2 : player1;
+        }
+    }
+    else 
+    {
+        //dator spel
+    }
+   
+}
+
+void game()
+{
+    welcomeMessage();
+    player1 = getName();
+    player2 = getName();
+    currentPlayer = player1;
+    repopulateStacks();
+    printStacks(stack);
+    gameLoop();
+}
 
 
 repopulateStacks();
