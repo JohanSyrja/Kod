@@ -12,3 +12,4 @@ C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\refint\ProjektuppgiftNim.d
 C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.pdb
 C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.genruntimeconfig.cache
 C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ref\ProjektuppgiftNim.dll
+C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.sourcelink.json

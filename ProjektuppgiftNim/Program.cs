@@ -10,7 +10,8 @@ bool checkIfEmpty()
 }
 string getInput()
 {
-    return Console.ReadLine();
+    string? input = Console.ReadLine();
+    return input ?? ""; 
 }
 void welcomeMessage()
 {
