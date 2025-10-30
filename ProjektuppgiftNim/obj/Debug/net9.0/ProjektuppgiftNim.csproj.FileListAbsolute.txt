@@ -12,4 +12,22 @@ C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\refint\ProjektuppgiftNim.d
 C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.pdb
 C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.genruntimeconfig.cache
 C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ref\ProjektuppgiftNim.dll
+<<<<<<< HEAD
 C:\Users\johan\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.sourcelink.json
+=======
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.exe
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.deps.json
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.runtimeconfig.json
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.dll
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\bin\Debug\net9.0\ProjektuppgiftNim.pdb
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.AssemblyInfoInputs.cache
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.AssemblyInfo.cs
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.csproj.CoreCompileInputs.cache
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.sourcelink.json
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.dll
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\refint\ProjektuppgiftNim.dll
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.pdb
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ProjektuppgiftNim.genruntimeconfig.cache
+C:\Users\Johan\Nim\Kod\ProjektuppgiftNim\obj\Debug\net9.0\ref\ProjektuppgiftNim.dll
+>>>>>>> 51843051039b5bb1cfcd0e326d4fc32a5fe48b57
