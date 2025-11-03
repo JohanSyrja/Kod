@@ -67,6 +67,7 @@ class Nim
         if (stack[whichStack - 1] >= amountOfSticks)
         {
             removeSticks(whichStack, amountOfSticks);
+            printStacks(stack);
         }
         else
         {
@@ -125,6 +126,11 @@ class Nim
         int amountToRemove = random.Next(1, stack[whichstack - 1] + 1);
         removeSticks(whichstack, amountToRemove);
     }
+    static void restartGame()
+    {
+        repopulateStacks();
+        playerwon = checkIfEmpty();
+    }
 
     static void gameLoop()
     {
@@ -161,6 +167,8 @@ class Nim
     }
 
     static void Main(string[] Args){
+        welcomeMessage();
+        game();
        
 
 
