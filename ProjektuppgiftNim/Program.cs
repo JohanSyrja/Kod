@@ -8,8 +8,10 @@ class Nim
     static string[,] stacks = new string[3, 5];
     static string player1 = "";
     static string player2 = "";
+    static string computerPlayer = "computer";
     static string currentPlayer = "";
     static bool playerwon = false;
+    static int gameMode = 0;
 
     static bool checkIfEmpty()
     {
@@ -22,12 +24,11 @@ class Nim
     }
     static void welcomeMessage()
     {
-        Console.WriteLine("Welcome to the program!, type rules for more info");
+        Console.WriteLine("Welcome to the program!, type rules for more info otherwise type 1");
         if (getInput() == "rules")
         {
-            Console.WriteLine("rules");
+            Console.WriteLine("There are three piles with five sticks each. The goal is to take the last stick from the last pile. Each player may remove as many sticks as they want from a specific pile.");
         }
-        else { Console.WriteLine("continue"); }
     }
     static string getName()
     {
@@ -113,11 +114,11 @@ class Nim
         }
 
     }
-    static string checkGameMode()
+    static void checkGameMode()
     {
         Console.WriteLine("Choose game mode: 1. Player vs Player 2. Player vs Computer");
-        string mode = getInput();
-        return mode;
+        int mode = int.TryParse(getInput(), out int res) ? res : 0;
+        gameMode = mode;
     }
     static void ComputerMove()
     {
@@ -134,7 +135,7 @@ class Nim
 
     static void gameLoop()
     {
-        if (checkGameMode() == "1")
+        if (gameMode == 1)
         {
             while (!playerwon)
             {
@@ -148,9 +149,12 @@ class Nim
                 currentPlayer = checkCurrentPlayer(player1, player2) == player1 ? player2 : player1;
             }
         }
-        else
+        if (gameMode == 2)
         {
-            //dator spel
+            while (!playerwon)
+            {
+
+            }
         }
 
     }
