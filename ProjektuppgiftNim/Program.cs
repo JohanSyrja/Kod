@@ -135,6 +135,7 @@ class Nim
         }
         if (temp >= 0 && temp <= stack[whichStack - 1])
         {
+            Console.WriteLine($"You have chosen to remove {temp} sticks from stack {whichStack}");
             return temp;
         }
         else
@@ -225,6 +226,7 @@ class Nim
         if (Int32.TryParse(getInput(), out int res))
         {
             gameMode = res;
+
         }
         else
         {
@@ -235,13 +237,22 @@ class Nim
         {
             player1 = getName();
             player2 = getName();
+            currentPlayer = player1;
         }
         if (gameMode == 2)
         {
             player1 = getName();
             player2 = computerPlayer;
+            currentPlayer = player1;
         }
-        currentPlayer = player1;
+        else
+        {
+            checkGameMode();
+        }
+        return;
+
+
+
     }
     /// <summary>
     /// tar fram datorns giltiga drag
@@ -351,45 +362,50 @@ class Nim
                 {
                     restartGame();
                 }
-                else return;
+                else
+                {
+                    Console.WriteLine("Game is now closing");
+                    Thread.Sleep(5000);
+                    return;
+                }
             }
+
+        }
+        /// <summary>
+        /// alla metoder för att starta spelet
+        /// </summary>
+
+        static void game()
+        {
+            welcomeMessage();
+            checkGameMode();
+            repopulateStacks();
+            printStacks(stack);
+            gameLoop();
+        }
+        /// <summary>
+        /// Fixar färgen för bakgrund och text
+        /// </summary>
+        static void setColor()
+        {
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Clear();
+
+        }
+        /// <summary>
+        /// Main metod som anropar spelet och färg
+        /// </summary>
+
+        static void Main(string[] Args)
+        {
+            setColor();
+            game();
+
+
+
         }
 
     }
-    /// <summary>
-    /// alla metoder för att starta spelet
-    /// </summary>
-
-    static void game()
-    {
-        welcomeMessage();
-        checkGameMode();
-        repopulateStacks();
-        printStacks(stack);
-        gameLoop();
-    }
-    /// <summary>
-    /// Fixar färgen för bakgrund och text
-    /// </summary>
-    static void setColor()
-    {
-        Console.BackgroundColor = ConsoleColor.DarkCyan;
-        Console.ForegroundColor = ConsoleColor.Black;
-        Console.Clear();
-
-    }
-    /// <summary>
-    /// Main metod som anropar spelet och färg
-    /// </summary>
-
-    static void Main(string[] Args)
-    {
-        setColor();
-        game();
-
-
-
-    }
-
 }
 /// Johan Syrja, Elias Fredin, 3/11 2025, Visual studio code verision: 1.105.1
