@@ -18,21 +18,6 @@ public class Board(int rows, int cols)
     {
         territories[row, col] = territory;
     }
-    public void UpdateBoard()
-    {
-        // Logic to update board state
-    }
-    public void GetNeighbors(int row, int col)
-    {
-        territories[row + 1, col].GetName();
-        territories[row - 1, col].GetName();
-        territories[row, col + 1].GetName();
-        territories[row, col - 1].GetName();
-        territories[row + 1, col + 1].GetName();
-        territories[row + 1, col - 1].GetName();
-        territories[row - 1, col + 1].GetName();
-        territories[row - 1, col - 1].GetName();
-    }
     public void DisplayBoard()
     {
         for (int i = 0; i < height; i++)
@@ -46,7 +31,7 @@ public class Board(int rows, int cols)
                     string ownerChar = owner != null && !string.IsNullOrEmpty(owner.GetName()) ? owner.GetName()[0].ToString() : " ";
                     int armies = territory.GetArmies();
 
-                    Console.Write($"[{ownerChar} {armies,2}]");
+                    Console.Write($"[{ownerChar} {territory.GetName()} {armies,2} {territory.GetLandType()} ]");
                 }
                 else
                 {

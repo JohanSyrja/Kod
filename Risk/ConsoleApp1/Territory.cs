@@ -12,16 +12,18 @@ public class Territory
     //addArmy
     private Player? owner;
     private int armies;
-    private string landtype;
+    private string type;
     private string name;
 
-    public Territory(string name, string landtype)
+    public Territory(string name, string type)
     {
         this.name = name ?? throw new ArgumentNullException(nameof(name));
-        this.landtype = landtype ?? string.Empty;
+        this.type = type ?? string.Empty;
         this.owner = null;
         this.armies = 0;
     }
+
+    public Territory(string name) : this(name, "Land") { }
 
     public string GetName()
     {
@@ -30,13 +32,13 @@ public class Territory
 
     public string GetLandType()
     {
-        return landtype;
+        return type;
     }
 
     public string SetLandType(string newLandType)
     {
-        landtype = newLandType ?? string.Empty;
-        return landtype;
+        type = newLandType ?? string.Empty;
+        return type;
     }
 
     public Player? GetOwner()

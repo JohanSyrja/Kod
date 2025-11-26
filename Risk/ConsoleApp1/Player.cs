@@ -5,15 +5,23 @@ namespace ConsoleApp1;
 public class Player
 {
     private readonly string name;
-
-    public Player(string name)
+    private bool isTurn;
+    private bool hasWon;
+    private readonly Territory StartingTerritory;
+    public Player(string name, Territory startingTerritory)
     {
         this.name = name ?? throw new ArgumentNullException(nameof(name));
+        this.StartingTerritory = startingTerritory ?? throw new ArgumentNullException(nameof(startingTerritory));
+        hasWon = false;
     }
 
     public string GetName()
     {
         return name;
+    }
+    public Territory GetStartingTerritory()
+    {
+        return StartingTerritory;
     }
     public void combat(int attackingArmies, Territory defendingTerritory)
     {
@@ -22,8 +30,11 @@ public class Player
         {
             int attackRoll = rand.Next(1, 7);
             int defendRoll = rand.Next(1, 7);
-
-            if (attackRoll > defendRoll)
+            if(defendingTerritory.GetArmies() == 0 || attackingArmies == 0)
+            {
+                break;
+            }
+            if (attackRoll > defendRoll )
             {
                 defendingTerritory.RemoveArmy(1);
             }
@@ -42,23 +53,15 @@ public class Player
             // Attacker lost all armies
         }
     }
-    public void Reinforce(Territory territory, int numArmies)
+    public void Reinforce(Territory Territory)
     {
-        if (territory.GetOwner() != this)
-        {
-            throw new InvalidOperationException("You do not own the territory.");
-        }
-        territory.AddArmy(numArmies);
+        Territory.AddArmy(3);
     }
     public void Attack(Territory fromTerritory, Territory toTerritory, int numArmies)
     {
         if (fromTerritory.GetOwner() != this)
         {
             throw new InvalidOperationException("You do not own the attacking territory.");
-        }
-        if (numArmies >= fromTerritory.GetArmies())
-        {
-            throw new InvalidOperationException("Not enough armies to attack.");
         }
         combat(numArmies, toTerritory);
         fromTerritory.RemoveArmy(numArmies);
@@ -82,11 +85,27 @@ public class Player
     {
         // logic to end turn
     }
+    public bool GetPlayerTurn()
+    {
+        return isTurn;
+    }
+    public bool SetPlayerTurn(bool isTurn)
+    {
+        this.isTurn = isTurn;
+        return isTurn;
+    }
+    public bool SetWon()
+    {
+        hasWon = true;
+        return hasWon;
+    }
+    public bool HasWon()
+    {
+        return hasWon;
+    }
 
     public override string ToString()
     {
         return $"Player: {name}";
     }
-
-
 }
