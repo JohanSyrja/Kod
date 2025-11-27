@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.IO.Compression;
 
 namespace ConsoleApp1;
 
@@ -7,7 +9,7 @@ public class Game
     /// game start logic 
     /// manage turns
     /// implement game loop
-    private List<Player> players = [];
+    private List<IPlayer> players = [];
     private Board? board;
     private int rows;
     private int cols;
@@ -30,25 +32,26 @@ public class Game
             Random rand = new Random();
             int row = rand.Next(1, rows);
             int col = rand.Next(0, cols -1);
-            board.GetTerritory(row, col).SetLandType("Water");
+            board.GetTerritory(row, col).LandType = "Water";
             
         }
-        Player player1 = new("Alice", board.GetTerritory(0, 0));
-        Player player2 = new("Bob", board.GetTerritory(rows - 1, cols - 1));
+
+        IPlayer player1 = new Player("Alice", board.GetTerritory(0, 0));
+        IPlayer player2 = new Player("Bob", board.GetTerritory(rows - 1, cols - 1));
         players.Add(player1);
         players.Add(player2);
-        board.GetTerritory(0, 0).SetOwner(player1);
+        board.GetTerritory(0, 0).Owner = player1;
         board.GetTerritory(0, 0).AddArmy(5);
-        board.GetTerritory(rows - 1, cols - 1).SetOwner(player2);
+        board.GetTerritory(rows - 1, cols - 1).Owner = player2;
         board.GetTerritory(rows - 1, cols - 1).AddArmy(5);
         player1.SetPlayerTurn(true);
+
         while (!players.Any(p => p.HasWon()))
         {
             for (int i = 0; i < players.Count; i++)
             {
                 if (players[i].GetPlayerTurn())
                 {
-                    ReinforcePhase();
                     board.DisplayBoard();
                     Console.WriteLine($"{players[i].GetName()}'s turn.");
                     Console.WriteLine("Choose an action: Attack, Fortify, EndTurn");
@@ -59,6 +62,7 @@ public class Game
                         {
                             case "attack":
                                 AttackPhase(GetAttackInput());
+                                board.DisplayBoard();
                                 break;
                             case "fortify":
                                 FortifyPhase(GetFortifyInput());
@@ -93,10 +97,12 @@ public class Game
                 if (i == players.Count - 1)
                 {
                     players[0].SetPlayerTurn(true);
+                    ReinforcePhase();
                 }
                 else
                 {
                     players[i + 1].SetPlayerTurn(true);
+                    ReinforcePhase();
                 }
                 break;
             }
@@ -117,7 +123,7 @@ public class Game
     }
     private List<string> GetFortifyInput()
     {
-        Console.WriteLine("Enter your fortify command (e.g., 'fortify, 1a1,  2a2, numArmies'):");
+        Console.WriteLine("Enter your fortify command (e.g. 1a1,  2a2, numArmies'):");
         string? input = Console.ReadLine() ?? string.Empty;
         List<string> inputList = [.. input.Split(',')];
         if (inputList.Count != 3)
@@ -137,38 +143,33 @@ public class Game
         {
             if (players[i].GetPlayerTurn())
             {
-                for (int r = 0; r < rows; r++)
+                var fromTerritory = board?.GetTerritoryByName(fromTerritoryName);
+                var toTerritory = board?.GetTerritoryByName(toTerritoryName);
+                if (fromTerritory == null || toTerritory == null)
                 {
-                    for (int c = 0; c < cols; c++)
-                    {
-                        if (board?.GetTerritory(r, c).GetName() == fromTerritoryName)
-                        {
-                            for (int r2 = 0; r2 < rows; r2++)
-                            {
-                                for (int c2 = 0; c2 < cols; c2++)
-                                {
-                                    if (board.GetTerritory(r2, c2).GetName() == toTerritoryName)
-                                    {
-                                        if (board.GetTerritory(r2, c2).GetOwner() == players[i])
-                                        {
-                                            Console.WriteLine("Cannot attack the same territory. Try again.");
-                                            AttackPhase(GetAttackInput());
-                                        }
-                                        // Ensure target is a neighboring cell (including diagonals)
-                                        int dr = Math.Abs(r - r2);
-                                        int dc = Math.Abs(c - c2);
-                                        if ((dr == 0 && dc == 0) || dr > 1 || dc > 1)
-                                        {
-                                            Console.WriteLine("Target territory is not adjacent. You can only attack neighboring territories.");
-                                            return;
-                                        }
-
-                                        players[i].Attack(board.GetTerritory(r, c), board.GetTerritory(r2, c2), numArmies);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Console.WriteLine("Invalid territory name(s). Try again.");
+                    AttackPhase(GetAttackInput());
+                    return;
+                }
+                if (toTerritory.Owner == players[i])
+                {
+                    Console.WriteLine("Cannot attack the same territory. Try again.");
+                    AttackPhase(GetAttackInput());
+                    return;
+                }
+                // Ensure target is a neighboring cell (including diagonals)
+                int dr = Math.Abs(GetRow(fromTerritoryName) - GetRow(toTerritoryName));
+                int dc = Math.Abs(GetCol(fromTerritoryName) - GetCol(toTerritoryName));
+                if ((dr == 0 && dc == 0) || dr > 1 || dc > 1)
+                {
+                    Console.WriteLine("Target territory is not adjacent. You can only attack neighboring territories.");
+                    AttackPhase(GetAttackInput());
+                    return;
+                }
+                // Only call Attack if both territories are not null
+                if (fromTerritory != null && toTerritory != null)
+                {
+                    players[i].Attack(fromTerritory, toTerritory, numArmies);
                 }
             }
         }
@@ -187,41 +188,49 @@ public class Game
     }
     private void FortifyPhase(List<string> input)
     {
-        string fromTerritoryName = input[1].Trim();
-        string toTerritoryName = input[2].Trim();
-        int numArmies = int.Parse(input[3].Trim());
+        string fromTerritoryName = input[0].Trim();
+        string toTerritoryName = input[1].Trim();
+        int numArmies = int.Parse(input[2].Trim());
         for (int i = 0; i < players.Count; i++)
         {
             if (players[i].GetPlayerTurn())
             {
-                for (int r = 0; r < rows; r++)
+                var fromTerritory = board?.GetTerritoryByName(fromTerritoryName);
+                var toTerritory = board?.GetTerritoryByName(toTerritoryName);
+                if (fromTerritory == null || toTerritory == null)
                 {
-                    for (int c = 0; c < cols; c++)
-                    {
-                        if (board?.GetTerritory(r, c).GetName() == fromTerritoryName)
-                        {
-                            for (int r2 = 0; r2 < rows; r2++)
-                            {
-                                for (int c2 = 0; c2 < cols; c2++)
-                                {
-                                    if (board.GetTerritory(r2, c2).GetName() == toTerritoryName)
-                                    {
-                                        players[i].Fortify(board.GetTerritory(r, c), board.GetTerritory(r2, c2), numArmies);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Console.WriteLine("Invalid territory name(s). Try again.");
+                    FortifyPhase(GetFortifyInput());
+                    return;
                 }
+                if(board?.GetTerritoryByName(fromTerritoryName)?.Owner != players[i] || board?.GetTerritoryByName(toTerritoryName)?.Owner != players[i] ){
+                    Console.WriteLine("You dont own both territories, please try again");
+                    FortifyPhase(GetFortifyInput());
+                    return;
+                }
+                players[i].Fortify(fromTerritory, toTerritory, numArmies);
             }
         }
     }
 
+    // Helper methods to extract row/col from territory name (e.g., "2a3" -> 2, 3)
+    private int GetRow(string name)
+    {
+        var idx = name.IndexOf('a');
+        if (idx > 0 && int.TryParse(name.Substring(0, idx), out int row))
+            return row;
+        return -1;
+    }
+    private int GetCol(string name)
+    {
+        var idx = name.IndexOf('a');
+        if (idx >= 0 && int.TryParse(name.Substring(idx + 1), out int col))
+            return col;
+        return -1;
+    }
 
     public static void Main(string[] args)
     {
         new Game().GameLoop();
-
     }
-
 }

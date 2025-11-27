@@ -7,6 +7,8 @@ public class Board(int rows, int cols)
 {
     private readonly int height = rows;
     private readonly int width = cols;
+    public int Height => height;
+    public int Width => width;
 
     private Territory[,] territories = new Territory[rows, cols];
 
@@ -27,11 +29,10 @@ public class Board(int rows, int cols)
                 Territory territory = territories[i, j];
                 if (territory != null)
                 {
-                    var owner = territory.GetOwner();
-                    string ownerChar = owner != null && !string.IsNullOrEmpty(owner.GetName()) ? owner.GetName()[0].ToString() : " ";
-                    int armies = territory.GetArmies();
+                    string ownerChar = territory.OwnerInitial;
+                    int armies = territory.Armies;
 
-                    Console.Write($"[{ownerChar} {territory.GetName()} {armies,2} {territory.GetLandType()} ]");
+                    Console.Write($"[{ownerChar} {territory.Name} {armies,2} {territory.LandType} ]");
                 }
                 else
                 {
@@ -41,6 +42,23 @@ public class Board(int rows, int cols)
             Console.WriteLine();
         }
     }
-
-
+    
+    // Lookup territory by name (e.g., "0a0")
+    public Territory? GetTerritoryByName(string name)
+    {
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                var territory = territories[i, j];
+                if (territory != null && territory.Name == name)
+                {
+                    return territory;
+                }
+            }
+        }
+        return null;
+    }
+    
+    
 }
