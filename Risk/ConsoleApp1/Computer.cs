@@ -16,7 +16,11 @@ public class Computer : Player, IPlayer
     {
        
     }
+<<<<<<< HEAD
     public override void Move(Territory fromTerritory, Territory toTerritory, int numArmies)
+=======
+    public override void Fortify(Territory fromTerritory, Territory toTerritory, int numArmies)
+>>>>>>> 8d6222cbc86c69b2278804e4b4bd871229ad454f
     {
 
     }
@@ -31,6 +35,10 @@ public class Computer : Player, IPlayer
     }
     private void AnalyzeBoard()
     {
+<<<<<<< HEAD
         
+=======
+        // AI board analysis logic
+>>>>>>> 8d6222cbc86c69b2278804e4b4bd871229ad454f
     }
 }

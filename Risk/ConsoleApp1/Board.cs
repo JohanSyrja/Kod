@@ -32,6 +32,7 @@ public class Board(int rows, int cols)
                     string ownerChar = territory.OwnerInitial;
                     int armies = territory.Armies;
 
+<<<<<<< HEAD
                     // Set background color based on territory type
                     if (territory is WaterTerritory)
                     {
@@ -54,6 +55,9 @@ public class Board(int rows, int cols)
 
                     Console.Write($"[{ownerChar} {territory.Name} {armies,2}]");
                     Console.ResetColor();
+=======
+                    Console.Write($"[{ownerChar} {territory.Name} {armies,2} {territory.LandType} ]");
+>>>>>>> 8d6222cbc86c69b2278804e4b4bd871229ad454f
                 }
                 else
                 {
@@ -63,6 +67,7 @@ public class Board(int rows, int cols)
             Console.WriteLine();
         }
     }
+<<<<<<< HEAD
 
     // Överdrivet ta bort.
     private ConsoleColor GetColorForPlayer(string playerName)
@@ -81,6 +86,8 @@ public class Board(int rows, int cols)
         };
         return colors[hash % colors.Length];
     }
+=======
+>>>>>>> 8d6222cbc86c69b2278804e4b4bd871229ad454f
     
     // Lookup territory by name (e.g., "0a0")
     public Territory? GetTerritoryByName(string name)

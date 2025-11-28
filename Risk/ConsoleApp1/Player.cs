@@ -6,7 +6,11 @@ public class Player : IPlayer
 {
     private readonly string name;
     private bool isTurn;
+<<<<<<< HEAD
     private bool hasLost;
+=======
+    private bool hasWon;
+>>>>>>> 8d6222cbc86c69b2278804e4b4bd871229ad454f
     protected readonly Territory StartingTerritory;
     public Player(string name, Territory startingTerritory)
     {
@@ -59,12 +63,23 @@ public class Player : IPlayer
     }
     public virtual void Attack(Territory fromTerritory, Territory toTerritory, int numArmies)
     {
+<<<<<<< HEAD
+=======
+        if (fromTerritory.Owner != this)
+        {
+            throw new InvalidOperationException("You do not own the attacking territory.");
+        }
+>>>>>>> 8d6222cbc86c69b2278804e4b4bd871229ad454f
         Combat(numArmies, toTerritory);
         fromTerritory.RemoveArmy(numArmies);
     }
 
 
+<<<<<<< HEAD
     public virtual void Move(Territory fromTerritory, Territory toTerritory, int numArmies)
+=======
+    public virtual void Fortify(Territory fromTerritory, Territory toTerritory, int numArmies)
+>>>>>>> 8d6222cbc86c69b2278804e4b4bd871229ad454f
     {
         fromTerritory.RemoveArmy(numArmies);
         toTerritory.AddArmy(numArmies);
@@ -94,6 +109,23 @@ public class Player : IPlayer
     public bool HasLost()
     {
         return hasLost;
+    }
+
+    public int GetTotalArmies(Board board)
+    {
+        int totalArmies = 0;
+        for (int i = 0; i < board.Height; i++)
+        {
+            for (int j = 0; j < board.Width; j++)
+            {
+                Territory territory = board.GetTerritory(i, j);
+                if (territory != null && territory.Owner == this)
+                {
+                    totalArmies += territory.Armies;
+                }
+            }
+        }
+        return totalArmies;
     }
 
     public int GetTotalArmies(Board board)
