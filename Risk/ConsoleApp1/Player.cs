@@ -2,17 +2,17 @@ using System;
 
 namespace ConsoleApp1;
 
-public class Player
+public class Player : IPlayer
 {
     private readonly string name;
     private bool isTurn;
-    private bool hasWon;
-    private readonly Territory StartingTerritory;
+    private bool hasLost;
+    protected readonly Territory StartingTerritory;
     public Player(string name, Territory startingTerritory)
     {
         this.name = name ?? throw new ArgumentNullException(nameof(name));
         this.StartingTerritory = startingTerritory ?? throw new ArgumentNullException(nameof(startingTerritory));
-        hasWon = false;
+        hasLost = false;
     }
 
     public string GetName()
@@ -23,14 +23,14 @@ public class Player
     {
         return StartingTerritory;
     }
-    public void combat(int attackingArmies, Territory defendingTerritory)
+    protected void Combat(int attackingArmies, Territory defendingTerritory)
     {
         Random rand = new Random();
-        while (defendingTerritory.GetArmies() > 0 || attackingArmies > 0)
+        while (defendingTerritory.Armies > 0 || attackingArmies > 0)
         {
             int attackRoll = rand.Next(1, 7);
             int defendRoll = rand.Next(1, 7);
-            if(defendingTerritory.GetArmies() == 0 || attackingArmies == 0)
+            if(defendingTerritory.Armies == 0 || attackingArmies == 0)
             {
                 break;
             }
@@ -43,47 +43,35 @@ public class Player
                 attackingArmies--;
             }
         }
-        if (defendingTerritory.GetArmies() == 0)
+        if (defendingTerritory.Armies == 0)
         {
             defendingTerritory.AddArmy(attackingArmies);
-            defendingTerritory.SetOwner(this);
+            defendingTerritory.Owner = this;
         }
         else
         {
             // Attacker lost all armies
         }
     }
-    public void Reinforce(Territory Territory)
+    public virtual void Reinforce(Territory Territory)
     {
         Territory.AddArmy(3);
     }
-    public void Attack(Territory fromTerritory, Territory toTerritory, int numArmies)
+    public virtual void Attack(Territory fromTerritory, Territory toTerritory, int numArmies)
     {
-        if (fromTerritory.GetOwner() != this)
-        {
-            throw new InvalidOperationException("You do not own the attacking territory.");
-        }
-        combat(numArmies, toTerritory);
+        Combat(numArmies, toTerritory);
         fromTerritory.RemoveArmy(numArmies);
     }
 
 
-    public void Fortify(Territory fromTerritory, Territory toTerritory, int numArmies)
+    public virtual void Move(Territory fromTerritory, Territory toTerritory, int numArmies)
     {
-        if (fromTerritory.GetOwner() != this || toTerritory.GetOwner() != this)
-        {
-            throw new InvalidOperationException("You do not own both territories.");
-        }
-        if (numArmies >= fromTerritory.GetArmies())
-        {
-            throw new InvalidOperationException("Not enough armies to fortify.");
-        }
         fromTerritory.RemoveArmy(numArmies);
         toTerritory.AddArmy(numArmies);
     }
-    public void EndTurn()
+    public virtual void EndTurn()
     {
-        // logic to end turn
+        // Default no-op; subclasses may override to perform end-of-turn actions
     }
     public bool GetPlayerTurn()
     {
@@ -94,14 +82,35 @@ public class Player
         this.isTurn = isTurn;
         return isTurn;
     }
-    public bool SetWon()
+    public void SetLost(Board board)
     {
-        hasWon = true;
-        return hasWon;
+        if( GetTotalArmies(board) == 0)
+        {
+            hasLost = true;
+            return;
+        }
+        hasLost = false;
     }
-    public bool HasWon()
+    public bool HasLost()
     {
-        return hasWon;
+        return hasLost;
+    }
+
+    public int GetTotalArmies(Board board)
+    {
+        int totalArmies = 0;
+        for (int i = 0; i < board.Height; i++)
+        {
+            for (int j = 0; j < board.Width; j++)
+            {
+                Territory territory = board.GetTerritory(i, j);
+                if (territory != null && territory.Owner == this)
+                {
+                    totalArmies += territory.Armies;
+                }
+            }
+        }
+        return totalArmies;
     }
 
     public override string ToString()

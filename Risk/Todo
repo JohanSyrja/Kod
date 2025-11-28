@@ -1,0 +1,17 @@
+/*Todo
+fixa så man kan se antal terriorier per spelare
+
+fixa namn på territorier som inte är case sensitive
+
+fixa computer logic
+
+fixa startskärm för att välja antal spelare och namn
+
+fixa krash vid ogiltigt input
+
+fixa så att det inte är möjligt att attackera om man endast äger 1 arme och så att move fungerar korrekt
+
+gör move möjligt på vatten territorier
+
+
+*/
