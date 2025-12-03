@@ -12,14 +12,46 @@ public class Board(int rows, int cols)
 
     private Territory[,] territories = new Territory[rows, cols];
 
+    /// <summary>
+    /// Retrieves a territory at the specified row and column.
+    /// </summary>
     public Territory GetTerritory(int row, int col)
     {
         return territories[row, col];
     }
+
+    /// <summary>
+    /// Sets a territory at the specified row and column.   
+    /// </summary>
     public void SetTerritory(int row, int col, Territory territory)
     {
         territories[row, col] = territory;
     }
+
+    /// <summary>
+    /// Retrieves all territories owned by a specific player.
+    /// </summary>
+
+    public List<Territory> GetOwnedTerritory(IPlayer player)
+    {
+        var ownedTerritories = new List<Territory>();
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                var territory = territories[i, j];
+                if (territory.Owner == player)
+                {
+                    ownedTerritories.Add(territory);
+                }
+            }
+        }
+        return ownedTerritories;
+    }
+
+    /// <summary>
+    /// Displays the board in the console with color coding for different territory types and owners.
+    /// </summary>
     public void DisplayBoard()
     {
         for (int i = 0; i < height; i++)
@@ -32,7 +64,8 @@ public class Board(int rows, int cols)
                     string ownerChar = territory.OwnerInitial;
                     int armies = territory.Armies;
 
-                    // Set background color based on territory type
+                   
+                   
                     if (territory is WaterTerritory)
                     {
                         Console.BackgroundColor = ConsoleColor.Blue;
@@ -42,7 +75,8 @@ public class Board(int rows, int cols)
                         Console.BackgroundColor = ConsoleColor.Green;
                     }
 
-                    // Set foreground color based on owner
+                   
+                   
                     if (territory.Owner != null)
                     {
                         Console.ForegroundColor = GetColorForPlayer(territory.Owner.GetName());
@@ -64,25 +98,25 @@ public class Board(int rows, int cols)
         }
     }
 
-    // Överdrivet ta bort.
+    /// <summary>
+    /// Determines a console color based on the player's name for consistent coloring.  
+    /// </summary>
     private ConsoleColor GetColorForPlayer(string playerName)
     {
         if (string.IsNullOrEmpty(playerName)) return ConsoleColor.White;
-        
-        // Assign consistent colors based on player name
+    
         int hash = Math.Abs(playerName.GetHashCode());
         var colors = new[] 
         { 
             ConsoleColor.Magenta, 
             ConsoleColor.Red,
-            ConsoleColor.Cyan, 
-            ConsoleColor.Yellow, 
-            ConsoleColor.White
         };
         return colors[hash % colors.Length];
     }
     
-    // Lookup territory by name (e.g., "0a0")
+    /// <summary>
+    /// Retrieves a territory by its name, ignoring case.   
+    /// </summary>
     public Territory? GetTerritoryByName(string name)
     {
         for (int i = 0; i < height; i++)
@@ -90,7 +124,7 @@ public class Board(int rows, int cols)
             for (int j = 0; j < width; j++)
             {
                 var territory = territories[i, j];
-                if (territory != null && territory.Name == name)
+                if (territory != null && territory.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     return territory;
                 }

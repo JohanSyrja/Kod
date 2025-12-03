@@ -6,24 +6,21 @@ namespace ConsoleApp1;
 /// Represents a land-based territory with standard rules.
 /// Examples: Plains, Forest, Mountain, Desert.
 /// </summary>
-public class LandTerritory : Territory
+/// <remarks>
+/// Initializes a new instance of the LandTerritory class.
+/// </remarks>
+public class LandTerritory(string name, string terrainType, int row, int col) : Territory(name, "Land", row, col)
 {
-    private string terrainType;
+    private string Type = terrainType ?? "Land";
 
-    public LandTerritory(string name, string terrainType = "Land")
-        : base(name, "Land")
-    {
-        this.terrainType = terrainType ?? "Land";
-    }
-
+    /// <summary>
+    /// Gets or sets the terrain type of the land territory.
+    /// </summary>
+    /// <returns> The terrain type as a string. </returns>
     public string TerrainType
     {
-        get => terrainType;
-        set => terrainType = value ?? "Land";
+        get => Type;
+        set => Type = value ?? "Land";
     }
 
-    public override string ToString()
-    {
-        return $"LandTerritory: {Name}, Terrain: {terrainType}, Owner: {Owner?.GetName() ?? "None"}, Armies: {Armies}";
-    }
 }

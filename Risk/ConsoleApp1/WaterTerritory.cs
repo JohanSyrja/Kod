@@ -4,38 +4,48 @@ namespace ConsoleApp1;
 
 /// <summary>
 /// Represents a water-based territory with naval-specific rules.
-/// Examples: Ocean, Sea, River.
 /// </summary>
-public class WaterTerritory : Territory
+/// <remarks>
+/// Initializes a new instance of the WaterTerritory class.
+/// </remarks>
+public class WaterTerritory(string name, int row, int col, string waterType = "Water") : Territory(name, "Water", row, col)
 {
-    private string waterType; // 
-    public WaterTerritory(string name, string waterType = "Water")
-        : base(name, "Water")
-    {
-        this.waterType = waterType ?? "Water";
-    }
+    private string Type = waterType ?? "Water";
 
+    /// <summary>
+    /// Gets or sets the water type of the territory.
+    /// </summary>
     public string WaterType
     {
-        get => waterType;
-        set => waterType = value ?? "Water";
+        get => Type;
+        set => Type = value ?? "Water";
     }
 
-    
+    /// <summary>
+    /// Determines if the territory can be attacked.
+    /// </summary>
+    /// <returns>True if the territory can be attacked. otherwise, false.</returns>
     public override bool CanBeAttacked()
     {
-        return false;
+        return true;
     }
-    private void ArmyAttrition()
+
+    /// <summary>
+    /// Applies army attrition rules specific to water territories.
+    /// </summary>
+    public void ArmyAttrition()
     {
         if (Armies > 1)
         {
-            RemoveArmy(Armies%2); 
+            RemoveArmy(Armies / 2); 
         }
     }
-
+    /// <summary>
+    /// Returns a string representation of the water territory. 
+    /// </summary>
+    /// <returns>A string describing the water territory.</returns>
     public override string ToString()
     {
-        return $"WaterTerritory: {Name}, Type: {waterType}, Owner: {Owner?.GetName() ?? "None"}, Armies: {Armies}";
+        return $"WaterTerritory: {Name}, Type: {Type}, Owner: {Owner?.GetName() ?? "None"}, Armies: {Armies}";
     }
 }
