@@ -71,14 +71,22 @@ public class Game(Board board, List<IPlayer> players)
             switch (action.ToLower())
             {
                 case "attack":
-                    AttackPhase(GetAttackInput());
-                    board.DisplayBoard();
-                    EndTurn();
+                    var attackInput = GetAttackInput();
+                    if (attackInput.Count > 0)
+                    {
+                        AttackPhase(attackInput);
+                        board.DisplayBoard();
+                        EndTurn();
+                    }
                     break;
                 case "move":
-                    MovePhase(GetMoveInput());
-                    board.DisplayBoard();
-                    EndTurn();
+                    var moveInput = GetMoveInput();
+                    if (moveInput.Count > 0)
+                    {
+                        MovePhase(moveInput);
+                        board.DisplayBoard();
+                        EndTurn();
+                    }
                     break;
                 case "endturn":
                     EndTurn();
@@ -173,7 +181,6 @@ public class Game(Board board, List<IPlayer> players)
         
         if( input.ToLower().Equals("back"))
         { 
-            ChooseMovePhase();
             return [];
         }
         
@@ -208,20 +215,22 @@ public class Game(Board board, List<IPlayer> players)
         Console.WriteLine("Format: fromTerritory, toTerritory, numArmies");
         Console.WriteLine("To move back type back");
         string? input = Console.ReadLine() ?? string.Empty;
-        List<string> inputList = [.. input.Split(',')];
-    if( input.ToLower().Equals("back"))
+        
+        if( input.ToLower().Equals("back"))
         {
-            ChooseMovePhase();
+            return [];
         }
-    if (inputList.Count != 3)
+        
+        List<string> inputList = [.. input.Split(',')];
+        if (inputList.Count != 3)
         {
             Console.WriteLine("Invalid input. Please try again.");
-            GetMoveInput();
+            return GetMoveInput();
         }
-    if (inputList[0].Trim() == inputList[1].Trim())
+        if (inputList[0].Trim() == inputList[1].Trim())
         {
-            Console.WriteLine("You cannot attack the same territory. Please try again.");
-            GetMoveInput();
+            Console.WriteLine("You cannot move to the same territory. Please try again.");
+            return GetMoveInput();
         }
         return inputList;
     }
