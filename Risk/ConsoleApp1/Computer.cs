@@ -63,39 +63,16 @@ public class Computer : Player, IPlayer
     /// <returns>The chosen territory to attack.</returns>
     public Territory? ChooseTerritoryToAttack(Board board, Territory fromTerritory)
     {
-        List<Territory> neighbors = new();
-        int totalLandTerritories = 0;
-        int ownedLandTerritories = 0;
-        
+        List<Territory> neighbors = [];
+  
         foreach (var neighbor in fromTerritory.GetNeighbors(board))
         {
-            if (neighbor.Owner != this)
+            if (neighbor.Owner != this && neighbor.CanBeAttacked())
             {
                 neighbors.Add(neighbor);
             }
         }
-        
-        for (int i = 0; i < board.Height; i++)
-        {
-            for (int j = 0; j < board.Width; j++)
-            {
-                var territory = board.GetTerritory(i, j);
-                if (territory is LandTerritory)
-                {
-                    totalLandTerritories++;
-                    if (territory.Owner == this)
-                    {
-                        ownedLandTerritories++;
-                    }
-                }
-            }
-        }
-        
-        if (ownedLandTerritories < totalLandTerritories)
-        {
-            neighbors.RemoveAll(t => t is WaterTerritory);
-        }
-        
+         
         if (neighbors.Count == 0)
         {
             return null;

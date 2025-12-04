@@ -5,6 +5,11 @@ namespace ConsoleApp1;
 /// <summary>
 /// Abstract base class for all territory types (Land, Water, etc.).
 /// </summary>
+/// KRAV #6
+/// Här tillsammans med land och waterterritory änvänder vi konceptet för att skapa en basklass för olika typer av territorier som sedan ändras 
+/// specifikt i deras respektive klasser där canBeAttacked metoden och armyAttrition metoden implementeras olika beroende på territorietyp
+/// 
+/// Används för att möjliggöra polymorfism så att olika territorietyper kan hanteras olika beorende på deras specifika regler och egenskaper
 public abstract class Territory(string name, string type, int row, int col)
 {
 
@@ -19,6 +24,9 @@ public abstract class Territory(string name, string type, int row, int col)
     /// Gets the initial of the owner's name for display purposes.
     /// </summary>
     /// <returns>String representing the owner's initial, or a space if unowned.</returns>
+    /// KRAV #3
+    /// Konvceptet används här för att visa ägaren av en territory på brädet med första bokstaven i spelarens namn
+    /// Används för att allt ska få plats på brädet vid utskrift i konsolen och för att indikera vem som äger vilken territory
     public string OwnerInitial
     {
         get
@@ -37,22 +45,21 @@ public abstract class Territory(string name, string type, int row, int col)
     {
         var neighbors = new List<Territory>();
         
-        for (int dr = -1; dr <= 1; dr++)
+        int[] rows = [-1, 1, 0, 0];
+        int[] cols = [0, 0, -1, 1];
+        
+        for (int i = 0; i < 4; i++)
         {
-            for (int dc = -1; dc <= 1; dc++)
+            int newRow = Row + rows[i];
+            int newCol = Col + cols[i];
+            
+            if (newRow >= 0 && newRow < board.Height && 
+                newCol >= 0 && newCol < board.Width)
             {
-                
-                if (dr == 0 && dc == 0) continue;
-                int newRow = Row + dr;
-                int newCol = Col + dc; 
-                if (newRow >= 0 && newRow < board.Height && 
-                    newCol >= 0 && newCol < board.Width)
+                var neighboring = board.GetTerritory(newRow, newCol);
+                if (neighboring != null)
                 {
-                    var neighboring = board.GetTerritory(newRow, newCol);
-                    if (neighboring != null)
-                    {
-                        neighbors.Add(neighboring);
-                    }
+                    neighbors.Add(neighboring);
                 }
             }
         }
@@ -71,8 +78,8 @@ public abstract class Territory(string name, string type, int row, int col)
         
         int dr = Math.Abs(Row - other.Row);
         int dc = Math.Abs(Col - other.Col);
-        
-        return dr <= 1 && dc <= 1 && (dr != 0 || dc != 0);
+
+        return (dr == 1 && dc == 0) || (dr == 0 && dc == 1);
     }
     
     /// <summary>
@@ -81,7 +88,6 @@ public abstract class Territory(string name, string type, int row, int col)
     /// <param name="num"></param>
     public void RemoveArmy(int num)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(num);
         if (num > Armies)
         {
             throw new ArgumentException("Cannot remove more armies than are present.");
@@ -95,7 +101,6 @@ public abstract class Territory(string name, string type, int row, int col)
     /// <param name="num"></param>
     public void AddArmy(int num)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(num);
         Armies += num;
     }
     

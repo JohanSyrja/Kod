@@ -11,6 +11,7 @@ namespace ConsoleApp1;
 public class WaterTerritory(string name, int row, int col, string waterType = "Water") : Territory(name, "Water", row, col)
 {
     private string Type = waterType ?? "Water";
+    private bool canBeAttacked = false;
 
     /// <summary>
     /// Gets or sets the water type of the territory.
@@ -27,7 +28,11 @@ public class WaterTerritory(string name, int row, int col, string waterType = "W
     /// <returns>True if the territory can be attacked. otherwise, false.</returns>
     public override bool CanBeAttacked()
     {
-        return true;
+        return canBeAttacked;
+    }
+    public void SetCanBeAttacked(bool value)
+    {
+        canBeAttacked = value;
     }
 
     /// <summary>

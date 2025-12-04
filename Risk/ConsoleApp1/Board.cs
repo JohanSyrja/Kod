@@ -3,14 +3,37 @@ using System;
 
 namespace ConsoleApp1;
 
-public class Board(int rows, int cols)
+public class Board
 {
-    private readonly int height = rows;
-    private readonly int width = cols;
+    private readonly int height;
+    private readonly int width;
     public int Height => height;
     public int Width => width;
 
-    private Territory[,] territories = new Territory[rows, cols];
+    /// KRAV #4
+    /// Här används konceptet för att lagra och hantera en 2D-array av Territory-objekt som representerar spelbrädet
+    /// Används för att organisera territorier i ett rutnät och möjliggöra enkel åtkomst och manipulation av dessa territorier under spelets gång
+    private Territory[,] territories;
+
+    /// <summary>
+    /// Initializes a new instance of the Board class with specified rows and columns.
+    /// </summary>
+    public Board(int rows, int cols)
+    {
+        height = rows;
+        width = cols;
+        territories = new Territory[rows, cols];
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the Board class with a square grid.
+    /// </summary>
+    /// KRAV #2
+    /// Här används konceptet för att skapa en kvadratisk spelbräda genom att anropa den mer generella konstruktorn
+    /// Används för att förenkla skapandet av standardbrädor där höjd och bredd är lika
+    public Board(int size) : this(size, size)
+    {
+    }
 
     /// <summary>
     /// Retrieves a territory at the specified row and column.

@@ -9,6 +9,9 @@ namespace ConsoleApp1;
 /// <summary>
 /// Initializes a new instance of the Game class with the specified board and players.
 /// </summary>
+/// KRAV #5
+/// Här används konceptet för att skapa spelare och brädet via beroendeinjection
+/// Används för att separera ansvaret för att skapa och hantera spelet från själva spelklassen
 public class Game(Board board, List<IPlayer> players)
 {
     private readonly Board board = board ?? throw new ArgumentNullException(nameof(board));
@@ -77,6 +80,7 @@ public class Game(Board board, List<IPlayer> players)
                         AttackPhase(attackInput);
                         board.DisplayBoard();
                         EndTurn();
+                        return;
                     }
                     break;
                 case "move":
@@ -86,6 +90,7 @@ public class Game(Board board, List<IPlayer> players)
                         MovePhase(moveInput);
                         board.DisplayBoard();
                         EndTurn();
+                        return;
                     }
                     break;
                 case "endturn":
@@ -188,12 +193,6 @@ public class Game(Board board, List<IPlayer> players)
         if (inputList.Count != 3)
         {
             Console.WriteLine("Invalid input. Please try again.");
-            return GetAttackInput();
-        }
-        if (inputList.Count != 3)
-        {
-            Console.WriteLine("Invalid input. Please try again.");
-            GetAttackInput();
             return GetAttackInput();
         }
         if (inputList[0].Trim() == inputList[1].Trim())
@@ -319,7 +318,14 @@ public class Game(Board board, List<IPlayer> players)
                 }
                 for (int j = 0; j < board.GetOwnedTerritory(players[i]).Count; j++)
                 {
-                    players[i].Reinforce(players[i].GetStartingTerritory());    
+                    players[i].Reinforce(players[i].GetStartingTerritory());
+                    if(board.GetOwnedTerritory(players[i]).Count >= board.Height * board.Width -1)
+                    {
+                        WaterTerritory waterTerritory = (WaterTerritory)board.GetTerritory(board.Height/2, board.Width/2);
+                        waterTerritory.SetCanBeAttacked(true);
+                    }
+                
+                
                 }                
                 
             }
@@ -374,23 +380,20 @@ public class Game(Board board, List<IPlayer> players)
     /// <summary>
     /// set up the board with territories.
     /// </summary>
-    private static Board SetupBoard(int rows, int cols)
+    private static Board SetupBoard(int size)
     {
-        var board = new Board(rows, cols);
+        var board = new Board(size);
         List<string> countries = new List<string> { "Sweden", "Norway", "Denmark", "Finland", "Iceland", "Estonia", "Latvia", "Lithuania", "Poland"};
-        // Initialize board with Land
-        for (int i = 0; i < rows; i++)
+        
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < cols; j++)
+            for (int j = 0; j < size; j++)
             {
-                board.SetTerritory(i, j, new LandTerritory(countries[i * cols + j], "Land", i, j));
+                board.SetTerritory(i, j, new LandTerritory(countries[i * size + j], "Land", i, j));
             }
         }
-
-        // Create water
         
-        board.SetTerritory(rows/2, cols/2, new WaterTerritory("Baltic", rows/2, cols/2));
-
+        board.SetTerritory(size/2, size/2, new WaterTerritory("Baltic", size/2, size/2));
         return board;
     }
 
@@ -494,7 +497,7 @@ public class Game(Board board, List<IPlayer> players)
     public static void Main(string[] args)
     {
         StartingScreen();
-        var board = SetupBoard(3, 3);
+        var board = SetupBoard(3);
         var players = SetupPlayers(board);
 
         var game = new Game(board, players);

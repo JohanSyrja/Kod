@@ -6,6 +6,11 @@ namespace ConsoleApp1;
 /// Interface defining the contract for player actions and properties.  
 /// </summary>
 
+/// KRAV #7 
+/// Här änveder vi kravet if form av ett interface för att definiera de grundläggande funktionerna och egenskaperna som varje spelare måste implementera
+/// och används för att möjliggöra polymorfism så att olika typer av spelare (mänskliga eller datorstyrda) kan hanteras på samma sätt i spelet
+/// 
+/// Används för att säkerställa att alla spelare har samma grundläggande funktionalitet och kan interagera med spelet på ett konsekvent sätt
 public interface IPlayer
 {
     /// <summary>
