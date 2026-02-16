@@ -23,4 +23,23 @@ public class LandTerritory(string name, string terrainType, int row, int col) : 
         set => Type = value ?? "Land";
     }
 
+    /// <summary>
+    /// Determines if the territory can be attacked.
+    /// Land can always be attacked when unowned, otherwise requires at least one army.
+    /// </summary>
+    /// <returns>True if the territory can be attacked; otherwise, false.</returns>
+    public override bool CanBeAttacked()
+    {
+        return Owner == null || Armies > 0;
+    }
+
+    /// <summary>
+    /// Returns a string representation of the land territory.
+    /// </summary>
+    /// <returns>A string describing the land territory.</returns>
+    public override string ToString()
+    {
+        return $"LandTerritory: {Name}, Terrain: {TerrainType}, Owner: {Owner?.GetName() ?? "None"}, Armies: {Armies}";
+    }
+
 }

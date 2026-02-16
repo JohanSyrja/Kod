@@ -28,7 +28,7 @@ public class WaterTerritory(string name, int row, int col, string waterType = "W
     /// <returns>True if the territory can be attacked. otherwise, false.</returns>
     public override bool CanBeAttacked()
     {
-        return canBeAttacked;
+        return canBeAttacked && Armies > 1;
     }
     public void SetCanBeAttacked(bool value)
     {
@@ -40,9 +40,17 @@ public class WaterTerritory(string name, int row, int col, string waterType = "W
     /// </summary>
     public void ArmyAttrition()
     {
+        ApplyEndTurnEffects();
+    }
+
+    /// <summary>
+    /// Applies end-turn effects specific to water territories.
+    /// </summary>
+    public override void ApplyEndTurnEffects()
+    {
         if (Armies > 1)
         {
-            RemoveArmy(Armies / 2); 
+            RemoveArmy(Armies / 2);
         }
     }
     /// <summary>

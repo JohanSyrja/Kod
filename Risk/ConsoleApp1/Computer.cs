@@ -10,12 +10,12 @@ public class Computer : Player, IPlayer
     /// Initializes a new instance of the Computer player with a specified starting territory.
     /// </summary>
 	public Computer(Territory startingTerritory)
-		: base("Computer", startingTerritory)
-	{
+        : base("Computer", startingTerritory)
+    {
         desicionScoreAttack = 0;
         desicionScoreMove = 0;
         isComputer = true;
-	}
+    }
 
     /// <summary>
     /// Analyzes the board and updates decision scores for attacking and moving based on neighboring territories.
@@ -32,7 +32,7 @@ public class Computer : Player, IPlayer
                 {
                     desicionScoreAttack += 8;
                 }
-                if(territory.Armies < neighbor.Armies)
+                if (territory.Armies < neighbor.Armies)
                 {
                     desicionScoreAttack -= 10;
                     desicionScoreMove += 10;
@@ -43,8 +43,8 @@ public class Computer : Player, IPlayer
                 desicionScoreMove += 5;
             }
         }
-        
-    
+
+
         if (StartingTerritory.Armies > 1)
         {
             desicionScoreAttack += 5;
@@ -64,7 +64,7 @@ public class Computer : Player, IPlayer
     public Territory? ChooseTerritoryToAttack(Board board, Territory fromTerritory)
     {
         List<Territory> neighbors = [];
-  
+
         foreach (var neighbor in fromTerritory.GetNeighbors(board))
         {
             if (neighbor.Owner != this && neighbor.CanBeAttacked())
@@ -72,12 +72,12 @@ public class Computer : Player, IPlayer
                 neighbors.Add(neighbor);
             }
         }
-         
+
         if (neighbors.Count == 0)
         {
             return null;
         }
-        
+
         Random rand = new();
         return neighbors[rand.Next(neighbors.Count)];
     }
@@ -90,7 +90,7 @@ public class Computer : Player, IPlayer
     public Territory? ChooseTerritoryToMove(Board board, Territory fromTerritory)
     {
         List<Territory> ownedNeighbors = [];
-        
+
         foreach (var neighbor in fromTerritory.GetNeighbors(board))
         {
             if (neighbor.Owner == this)
@@ -100,9 +100,9 @@ public class Computer : Player, IPlayer
         }
         if (ownedNeighbors.Count == 0)
         {
-            return null; 
+            return null;
         }
-        
+
         Random rand = new();
         return ownedNeighbors[rand.Next(ownedNeighbors.Count)];
     }
@@ -114,12 +114,12 @@ public class Computer : Player, IPlayer
     public int GetMoveValue()
     {
         return desicionScoreMove;
-    } 
+    }
 
     /// <summary>
     /// Resets the attack and move decision scores to zero. 
     /// </summary>
-    
+
     public void ResetScores()
     {
         desicionScoreAttack = 0;
@@ -132,5 +132,46 @@ public class Computer : Player, IPlayer
     public int GetAttackValue()
     {
         return desicionScoreAttack;
+    }
+    public override void Reinforce(Territory territory)
+    {
+        int reinforcement = territory.Armies < 3 ? 5 : 2;
+        territory.AddArmy(reinforcement);
+    }
+
+    public override void Attack(Territory fromTerritory, Territory toTerritory, int numArmies)
+    {
+        if (fromTerritory.Owner != this || toTerritory.Owner == this || !fromTerritory.IsNeighbor(toTerritory))
+        {
+            return;
+        }
+
+        int maxAttack = fromTerritory.Armies - 1;
+        if (maxAttack <= 0)
+        {
+            return;
+        }
+
+        int armiesToUse = toTerritory.Armies >= fromTerritory.Armies ? Math.Max(1, maxAttack / 2) : maxAttack;
+        base.Attack(fromTerritory, toTerritory, armiesToUse);
+        Console.WriteLine($"Datorn attackerar {toTerritory.Name} från {fromTerritory.Name} med {armiesToUse} arméer.");
+    }
+
+    public override void Move(Territory fromTerritory, Territory toTerritory, int numArmies)
+    {
+        if (fromTerritory.Owner != this || toTerritory.Owner != this)
+        {
+            return;
+        }
+
+        int movable = fromTerritory.Armies - 1;
+        if (movable <= 0)
+        {
+            return;
+        }
+
+        int armiesToMove = toTerritory.Armies < fromTerritory.Armies ? Math.Max(1, movable / 2) : 1;
+        base.Move(fromTerritory, toTerritory, armiesToMove);
+        Console.WriteLine($"Datorn flyttar {armiesToMove} arméer från {fromTerritory.Name} till {toTerritory.Name}.");
     }
 }

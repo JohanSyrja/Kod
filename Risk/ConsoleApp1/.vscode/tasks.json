@@ -1,0 +1,70 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"c:\\Users\\Johan\\Nim\\Kod\\Risk\\ConsoleApp1\\ConsoleApp1.csproj"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"c:\\Users\\Johan\\Nim\\Kod\\Risk\\ConsoleApp1\\ConsoleApp1.csproj"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"c:\\Users\\Johan\\Nim\\Kod\\Risk\\ConsoleApp1\\ConsoleApp1.csproj"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"c:\\Users\\Johan\\Nim\\Kod\\Risk\\ConsoleApp1\\ConsoleApp1.csproj"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"c:\\Users\\Johan\\Nim\\Kod\\Risk\\ConsoleApp1\\ConsoleApp1.csproj"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$msCompile"
+			]
+		}
+	]
+}

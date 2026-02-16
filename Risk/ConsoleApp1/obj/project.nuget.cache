@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LJoJ/eWx6aY=",
+  "dgSpecHash": "lSPIyUWrhwE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\johan\\Kod\\Risk\\ConsoleApp1\\ConsoleApp1.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\johan\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.11\\microsoft.netcore.app.ref.9.0.11.nupkg.sha512",
-    "C:\\Users\\johan\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.11\\microsoft.windowsdesktop.app.ref.9.0.11.nupkg.sha512",
-    "C:\\Users\\johan\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\9.0.11\\microsoft.aspnetcore.app.ref.9.0.11.nupkg.sha512",
-    "C:\\Users\\johan\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\9.0.11\\microsoft.netcore.app.host.win-x64.9.0.11.nupkg.sha512"
-  ],
+  "projectFilePath": "c:\\Users\\Johan\\Nim\\Kod\\Risk\\ConsoleApp1\\ConsoleApp1.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

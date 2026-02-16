@@ -114,6 +114,13 @@ public abstract class Territory(string name, string type, int row, int col)
     }
 
     /// <summary>
+    /// Applies end-turn effects specific to the territory type.
+    /// </summary>
+    public virtual void ApplyEndTurnEffects()
+    {
+    }
+
+    /// <summary>
     /// Returns a string representation of the territory.
     /// </summary>
     public override string ToString()

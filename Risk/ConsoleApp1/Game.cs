@@ -67,7 +67,7 @@ public class Game(Board board, List<IPlayer> players)
     /// </summary>
     private void ChooseMovePhase()
     {
-       
+
         string action = GetPlayerInput();
         if (action != null)
         {
@@ -120,16 +120,16 @@ public class Game(Board board, List<IPlayer> players)
     {
 
         players.RemoveAll(p => p.GetTotalArmies(board) == 0);
-        if(players.Count <= 1)
+        if (players.Count <= 1)
         {
             gameOver = true;
             Console.WriteLine("Game Over!");
             Console.WriteLine($"{players[0].GetName()} wins!");
             GameLoop();
         }
-             
+
         {
-        foreach (var player in players)
+            foreach (var player in players)
             {
                 player.SetLost(board);
             }
@@ -165,10 +165,7 @@ public class Game(Board board, List<IPlayer> players)
             for (int j = 0; j < board.Width; j++)
             {
                 var territory = board.GetTerritory(i, j);
-                if (territory is WaterTerritory waterTerritory)
-                {
-                    waterTerritory.ArmyAttrition();
-                }
+                territory.ApplyEndTurnEffects();
             }
         }
     }
@@ -183,12 +180,12 @@ public class Game(Board board, List<IPlayer> players)
         Console.WriteLine("To move back type back");
         Console.WriteLine("Format: fromTerritory, toTerritory, numArmies");
         string? input = Console.ReadLine() ?? string.Empty;
-        
-        if( input.ToLower().Equals("back"))
-        { 
+
+        if (input.ToLower().Equals("back"))
+        {
             return [];
         }
-        
+
         List<string> inputList = [.. input.Split(',')];
         if (inputList.Count != 3)
         {
@@ -214,12 +211,12 @@ public class Game(Board board, List<IPlayer> players)
         Console.WriteLine("Format: fromTerritory, toTerritory, numArmies");
         Console.WriteLine("To move back type back");
         string? input = Console.ReadLine() ?? string.Empty;
-        
-        if( input.ToLower().Equals("back"))
+
+        if (input.ToLower().Equals("back"))
         {
             return [];
         }
-        
+
         List<string> inputList = [.. input.Split(',')];
         if (inputList.Count != 3)
         {
@@ -241,7 +238,7 @@ public class Game(Board board, List<IPlayer> players)
     {
         string fromTerritoryName = input[0].Trim().ToLower();
         string toTerritoryName = input[1].Trim().ToLower();
-        int numArmies  = int.TryParse(input[2].Trim(), out int result) ? result : 0;
+        int numArmies = int.TryParse(input[2].Trim(), out int result) ? result : 0;
         if (numArmies <= 0)
         {
             Console.WriteLine("Number of armies must be greater than zero. Try again.");
@@ -260,7 +257,7 @@ public class Game(Board board, List<IPlayer> players)
                     AttackPhase(GetAttackInput());
                     return;
                 }
-                if(toTerritory.CanBeAttacked() == false)
+                if (toTerritory.CanBeAttacked() == false)
                 {
                     Console.WriteLine("You cannot attack this territory. Try again.");
                     AttackPhase(GetAttackInput());
@@ -285,14 +282,14 @@ public class Game(Board board, List<IPlayer> players)
                     AttackPhase(GetAttackInput());
                     return;
                 }
-        
+
                 if (fromTerritory != null && toTerritory != null)
                 {
                     players[i].Attack(fromTerritory, toTerritory, numArmies);
                 }
             }
-              
-               
+
+
         }
 
 
@@ -307,27 +304,27 @@ public class Game(Board board, List<IPlayer> players)
         {
             if (players[i].GetPlayerTurn())
             {
-                if(players[i].GetStartingTerritory().Owner != players[i])
+                if (players[i].GetStartingTerritory().Owner != players[i])
                 {
                     Console.WriteLine("Your starting territory has been captured. You cannot reinforce.");
                     return;
                 }
-                if (board.GetTerritory(board.Height/2, board.Width/2).Owner == players[i])
+                if (board.GetTerritory(board.Height / 2, board.Width / 2).Owner == players[i])
                 {
                     ArmyAttrition();
                 }
                 for (int j = 0; j < board.GetOwnedTerritory(players[i]).Count; j++)
                 {
                     players[i].Reinforce(players[i].GetStartingTerritory());
-                    if(board.GetOwnedTerritory(players[i]).Count >= board.Height * board.Width -1)
+                    if (board.GetOwnedTerritory(players[i]).Count >= board.Height * board.Width - 1)
                     {
-                        WaterTerritory waterTerritory = (WaterTerritory)board.GetTerritory(board.Height/2, board.Width/2);
+                        WaterTerritory waterTerritory = (WaterTerritory)board.GetTerritory(board.Height / 2, board.Width / 2);
                         waterTerritory.SetCanBeAttacked(true);
                     }
-                
-                
-                }                
-                
+
+
+                }
+
             }
         }
     }
@@ -359,7 +356,7 @@ public class Game(Board board, List<IPlayer> players)
                     return;
                 }
 
-                
+
                 if (board?.GetTerritoryByName(toTerritoryName)?.Owner != players[i])
                 {
                     Console.WriteLine("You dont own both territories, please try again");
@@ -368,14 +365,14 @@ public class Game(Board board, List<IPlayer> players)
                 }
                 players[i].Move(fromTerritory, toTerritory, numArmies);
             }
-            
+
         }
     }
 
-    
 
 
-    
+
+
 
     /// <summary>
     /// set up the board with territories.
@@ -383,8 +380,8 @@ public class Game(Board board, List<IPlayer> players)
     private static Board SetupBoard(int size)
     {
         var board = new Board(size);
-        List<string> countries = new List<string> { "Sweden", "Norway", "Denmark", "Finland", "Iceland", "Estonia", "Latvia", "Lithuania", "Poland"};
-        
+        List<string> countries = new List<string> { "Sweden", "Norway", "Denmark", "Finland", "Iceland", "Estonia", "Latvia", "Lithuania", "Poland" };
+
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
@@ -392,15 +389,17 @@ public class Game(Board board, List<IPlayer> players)
                 board.SetTerritory(i, j, new LandTerritory(countries[i * size + j], "Land", i, j));
             }
         }
-        
-        board.SetTerritory(size/2, size/2, new WaterTerritory("Baltic", size/2, size/2));
+
+        board.SetTerritory(size / 2, size / 2, new WaterTerritory("Baltic", size / 2, size / 2));
         return board;
     }
 
     /// <summary>
     /// set up the players. 
     /// </summary>
-
+    /// Krav #1
+    /// Här änväds setuplayers bara i game och behöver därför inte vara public.
+    /// 
     private static List<IPlayer> SetupPlayers(Board board)
     {
         int startingArmies = 5;
@@ -410,7 +409,7 @@ public class Game(Board board, List<IPlayer> players)
             new Computer(board.GetTerritory(board.Height - 1, board.Width - 1))
         };
 
-       
+
         players[0].GetStartingTerritory().Owner = players[0];
         players[0].GetStartingTerritory().AddArmy(startingArmies);
 
@@ -427,18 +426,18 @@ public class Game(Board board, List<IPlayer> players)
     {
         Random rand = new();
         Console.WriteLine("Computer is making its move...");
-        System.Threading.Thread.Sleep(1000); 
-        
+        System.Threading.Thread.Sleep(1000);
+
         var ownedTerritories = board.GetOwnedTerritory(computer);
         foreach (var territory in ownedTerritories)
         {
             computer.AnalyzeBoard(territory, board);
         }
-        
+
         int attackValue = computer.GetAttackValue();
         int moveValue = computer.GetMoveValue();
-        
-    
+
+
         if (attackValue > moveValue)
         {
             Console.WriteLine("Computer attacks.");
@@ -449,11 +448,11 @@ public class Game(Board board, List<IPlayer> players)
                 if (toAttack != null && toAttack != target && toAttack.Owner != computer && target.IsNeighbor(toAttack))
                 {
                     {
-                        computer.Attack(target, toAttack, target.Armies -1);
+                        computer.Attack(target, toAttack, target.Armies - 1);
                         Console.WriteLine("Computer attacks from " + target.Name + " to " + toAttack.Name);
                     }
                 }
-                else 
+                else
                 {
                     Console.WriteLine("Computer could not find a valid attack.");
                     Console.WriteLine("Computer tries again");
@@ -468,21 +467,22 @@ public class Game(Board board, List<IPlayer> players)
             if (fromTerritory != null && fromTerritory.Armies > 1)
             {
                 Territory? toMove = computer.ChooseTerritoryToMove(board, fromTerritory);
-                if (toMove != null && toMove != fromTerritory &&  toMove.Owner == computer)
+                if (toMove != null && toMove != fromTerritory && toMove.Owner == computer)
                 {
-                    {   
-                        computer.Move(fromTerritory, toMove, fromTerritory.Armies -1);
+                    {
+                        computer.Move(fromTerritory, toMove, fromTerritory.Armies - 1);
                         Console.WriteLine("Computer moves from " + fromTerritory.Name + " to " + toMove.Name);
                     }
                 }
-                else {
+                else
+                {
                     Console.WriteLine("Computer could not find a valid move.");
                     Console.WriteLine("Computer tries again");
                     ComputerTurn(computer);
                 }
             }
         }
-        
+
         computer.ResetScores();
     }
     private Territory? GetRandomOwnedTerritory(Computer player)
